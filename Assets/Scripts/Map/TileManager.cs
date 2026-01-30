@@ -36,7 +36,7 @@ public class TileManager : MonoBehaviour
 
     private void Update()
     {
-        TileHighlight();//检测选中地图高亮显示
+        TileChoose();//检测选中地图高亮显示
     }
 
     private void GenerateMap()
@@ -52,7 +52,7 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void TileHighlight()
+    private void TileChoose()
     {
         if (Input.GetMouseButtonDown(0))
         {
@@ -73,7 +73,7 @@ public class TileManager : MonoBehaviour
             Debug.Log("Selected Tile Index: " + SelectIndex);
 
             tile = tileList[SelectIndex].GetComponent<Tile>();
-            tile.Highlight(true);
+            tile.whenChosen(true);
         }
     }
 

@@ -27,11 +27,16 @@ public class Tile : MonoBehaviour
             Debug.LogError("SpriteRenderer component not found on the Tile GameObject.");
         }
     }
-    public void Highlight(bool isHighlight)
+    public void whenChosen(bool isChosen)
     {
-        if (isHighlight)
+        if (isChosen)
         {
             renderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
+
+            Actor actor = GetComponentInChildren<Actor>();
+            if (actor != null&&!actor.Acting_) { 
+
+            }
         }
         else
         {
