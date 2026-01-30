@@ -9,20 +9,33 @@ public class Individual : MonoBehaviour
     public string Name_ { get => Name; }
 
     public int Attack => (int)(InitialAttack * AttackPercent + AttackBonus);
-    private int InitialAttack;
-    private float AttackPercent = 1f;//百分比攻击力
-    private int AttackBonus = 0;//额外攻击力
+    protected int InitialAttack;
+    protected float AttackPercent = 1f;//百分比攻击力
+    protected int AttackBonus = 0;//额外攻击力
 
-    private int Health;
+    protected int Health;
     public int Health_ { get => Health; }
-    private int MaxHealth;
+    protected int MaxHealth;
     public int MaxHealth_ { get => MaxHealth; }
+
+    private int Mana;//魔力值
+    public int Mana_ => Mana;
+    protected int MaxMana;//最大魔力值
+    public int MaxMana_ => MaxMana;
+
+    public Individual()
+    {
+        IndividualInit();
+    }
+    protected virtual void IndividualInit()
+    {
+
+    }
 
     private void Start()
     {
         IndividualStart();
     }
-
     protected virtual void IndividualStart()
     {
 
@@ -32,7 +45,6 @@ public class Individual : MonoBehaviour
     {
         IndividualUpdate();
     }
-
     protected virtual void IndividualUpdate()
     {
 
