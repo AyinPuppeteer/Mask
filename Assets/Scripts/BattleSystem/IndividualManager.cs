@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class IndividualManager : MonoBehaviour
 {
-    private List<GameObject> ActorObs = new();
-    private List<GameObject> EnemyObs = new();
+    [SerializeField]
+    private List<GameObject> IndividualObs = new();
+
+    private List<Individual> Individuals = new();
+    private List<Actor> Actors = new();
+    private List<Enemy> Enemies = new();
 
     public static IndividualManager Instance { get; private set; }
 
@@ -14,9 +18,9 @@ public class IndividualManager : MonoBehaviour
         Instance = this;
     }
 
-    public static GameObject ReturnActor(string name)
+    public static GameObject ReturnIndividual(string name)
     {
-        foreach(var ob in Instance.ActorObs)
+        foreach(var ob in Instance.IndividualObs)
         {
             Individual indi = ob.GetComponent<Individual>();
             if(indi != null && indi.Name_ == name)
@@ -25,22 +29,43 @@ public class IndividualManager : MonoBehaviour
             }
         }
 
-        Debug.LogError($"未查找到该名字的角色：{name}");
+        Debug.LogError($"未查找到该名字的单位：{name}");
         return null;
     }
 
-    public static GameObject ReturnEnemy(string name)
+    //创造单位
+    public void CreateIndividual(string name)
     {
-        foreach (var ob in Instance.EnemyObs)
+        GameObject model = ReturnIndividual(name);
+        if (model == null) return;
+        //如果对应格子已有单位则驳回
+        GameObject ob = Instantiate(model);
+        Individual indi = ob.GetComponent<Individual>();
+        Individuals.Add(indi);
+        if(indi is Actor actor)
         {
-            Individual indi = ob.GetComponent<Individual>();
-            if (indi != null && indi.Name_ == name)
-            {
-                return ob;
-            }
+            Actors.Add(actor);
         }
-
-        Debug.LogError($"未查找到该名字的敌人：{name}");
-        return null;
+        else if(indi is Enemy enemy)
+        {
+            Enemies.Add(enemy);
+        }
     }
+
+    #region 获取单位
+    public static List<Individual> ReturnAllIndividuals()
+    {
+        return Instance.Individuals;
+    }
+
+    public static List<Actor> ReturnAllActors()
+    {
+        return Instance.Actors;
+    }
+
+    public static List<Enemy> ReturnAllEnemys()
+    {
+        return Instance.Enemies;
+    }
+    #endregion
 }
