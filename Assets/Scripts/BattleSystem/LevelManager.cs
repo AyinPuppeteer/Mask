@@ -22,6 +22,17 @@ public class LevelPack
 {
     private MapPack MapPack;
     public MapPack MapPack_ { get => MapPack; set => MapPack = value; }
+
+    private Dictionary<(int, int), string> IndividualNames = new();
+    public Dictionary<(int, int), string> IndividualNames_ => IndividualNames;
+    public void AddIndividual(string name, int x, int y)
+    {
+        if(IndividualNames.ContainsKey((x, y)))
+        {
+            Debug.LogError($"在位置({x}, {y})处添加名为{name}的角色失败！该位置已有名为{IndividualNames[(x, y)]}的角色！");
+        }
+        IndividualNames.Add((x, y), name);
+    }
 }
 
 //地图配置包
