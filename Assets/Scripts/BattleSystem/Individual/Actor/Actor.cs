@@ -6,6 +6,8 @@ using UnityEngine;
 //所有角色的父类
 public class Actor : Individual
 {
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
     private bool Acting;//是否处于行动状态
     public bool Acting_ { get => Acting; set => Acting = value; }
     public bool Controlable => !Acting;
@@ -29,8 +31,16 @@ public class Actor : Individual
     {
 
     }
-    public void Highlight()
+    public void Highlight(bool isChoose)
     {
-
+        if (!isChoose)
+        {
+            spriteRenderer.color = new Color(0, 0, 0, 0);
+           
+        }
+        else
+        {
+            spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
+        }
     }
 }

@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ce37a0ed8c7ba448d38a44e9bd5e3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 
-  index: 0
-  renderer: {fileID: 0}
+  type: Grass
+  index: 4032
+  renderer: {fileID: 1164347553420878972}
 --- !u!212 &1164347553420878972
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -89,14 +89,14 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 339313079, guid: 5a68962c86ae08a4cbddfa759db8a730, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0

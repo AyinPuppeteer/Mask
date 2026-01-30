@@ -34,8 +34,12 @@ public class Tile : MonoBehaviour
             renderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
 
             Actor actor = GetComponentInChildren<Actor>();
-            if (actor != null&&!actor.Acting_) { 
+            if (actor != null&&!actor.Acting_) {
+                if(BattleManager.Instance.ChoosingActor_!=null)
+                BattleManager.Instance.ChoosingActor_.Highlight(false);//取消之前选中的高亮
 
+                actor.Highlight(true);//高亮当前选中的
+                BattleManager.Instance.ChooseActor(actor);//更新战斗管理器中的选中角色
             }
         }
         else
