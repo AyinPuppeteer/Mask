@@ -10,6 +10,9 @@ public class BattleManager : MonoBehaviour
     private int Turn;//当前回合数
     private BattlePhase Phase = BattlePhase.分析;//当前状态
 
+    private Actor ChoosingActor;//选中的角色
+    public Actor ChoosingActor_ => ChoosingActor;
+
     public static BattleManager Instance;
 
     private void Awake()
@@ -37,6 +40,12 @@ public class BattleManager : MonoBehaviour
             string name = pair.Value;
             IndividualManager.Instance.CreateIndividual(name);//生成单位
         }
+    }
+
+    public void ChooseActor(Actor actor)
+    {
+        ChoosingActor = actor;
+        //选中高亮
     }
 
     //判断胜利失败条件
