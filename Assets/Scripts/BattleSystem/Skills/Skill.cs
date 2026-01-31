@@ -20,13 +20,13 @@ public class Skill
     protected int ManaCost;//蓝耗
     public int ManaCost_ => ManaCost;
 
-    private Individual Player;
+    protected Individual Player;
 
     public Skill()
     {
         SkillInit();
     }
-    public void SkillInit()
+    protected virtual void SkillInit()
     {
 
     }
@@ -70,7 +70,7 @@ public class Skill
         }
     }
 
-    public bool JudgeTile(Tile tile)
+    public virtual bool JudgeTile(Tile tile)
     {
         return false;
     }
@@ -78,13 +78,13 @@ public class Skill
 
     #region 释放相关脚本
     //释放时
-    public void Use()
+    public void Use(Tile tile)
     {
         Player.UseMana(ManaCost);
         CoolTimer = CoolTime;
-        WhenUse();
+        WhenUse(tile);
     }
-    protected virtual void WhenUse()
+    protected virtual void WhenUse(Tile tile)
     {
         
     }

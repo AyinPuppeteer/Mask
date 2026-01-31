@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,22 @@ public class Individual : MonoBehaviour
     protected float IntelligencePercent = 1f;
     protected float IntelligenceBonus = 0;
     #endregion
+
+    public int MainValue
+    {
+        get
+        {
+            if(Career == Career.战士 || Career == Career.游侠)
+            {
+                return Strength;
+            }
+            else if(Career == Career.法师 || Career == Career.牧师)
+            {
+                return Intelligence;
+            }
+            return 0;
+        }
+    }
 
     #region 生命值
     protected int Health;
@@ -171,16 +188,28 @@ public class Individual : MonoBehaviour
     }
 
     #region 伤害相关
+    public bool AimJudge(Individual another)
+    {
+        if(this is Actor)
+        {
+            return another is Enemy;
+        }
+        else if(this is Enemy)
+        {
+            return another is Actor;
+        }
+        return false;
+    }
     /// <summary>
     /// 伤害实施（返回实际受伤量）
     /// </summary>
-    public int Hurt(int damage)
+    public int Hurt(float damage)
     {
         if (Shield > 0)
         {
             if(Shield >= damage)
             {
-                Shield -= damage;
+                Shield -= (int)damage;
                 damage = 0;
                 BattleManager.Instance.TextJump(transform.position, "完全防御", Color.blue);
             }
@@ -190,25 +219,25 @@ public class Individual : MonoBehaviour
                 Shield = 0;
             }
         }
-        Health -= damage;
-        if(Health <= 0)
+        Health = Math.Max(Health - (int)damage, 0);
+        if (Health <= 0)
         {
-            DeadSolve();
+            Destroy(gameObject);
         }
-        BattleManager.Instance.TextJump(transform.position, damage.ToString(), Color.red);
-        return damage;
+        BattleManager.Instance.TextJump(transform.position, ((int)damage).ToString(), Color.red);
+        return (int)damage;
     }
 
     /// <summary>
     /// 攻击（返回实际伤害量）
     /// </summary>
-    public int Attack(Individual another, int strength = -1)
+    public int Attack(Individual another, float attack = -1)
     {
-        if(strength == -1)
+        if(attack == -1)
         {
-            strength = Strength;
+            attack = Strength;
         }
-        return another.Hurt(strength);
+        return another.Hurt(attack);
     }
     #endregion
     #region 恢复
@@ -222,9 +251,9 @@ public class Individual : MonoBehaviour
 
     #region 死亡处理
     //死亡处理
-    private void DeadSolve()
+    public virtual void DeadSolve()
     {
-
+        Destroy(gameObject);
     }
     #endregion
 

@@ -1,0 +1,47 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UIElements;
+
+//»ù´¡¹¥»÷
+public class BasicAttack : Skill
+{
+    private float AttackRate;//¹¥»÷±ÈÂÊ
+    private int Distance;//¹¥»÷·¶Î§
+
+    public BasicAttack(float rate, int distance) : base()
+    {
+        AttackRate = rate;
+        Distance = distance;
+    }
+
+    protected override void SkillInit()
+    {
+        Name = "»ù´¡¹¥»÷";
+    }
+
+    public override bool JudgeTile(Tile tile)
+    {
+        if (!base.JudgeTile(tile)) return false;
+        foreach(var indi in tile.Individuals_)
+        {
+            if (Player.AimJudge(indi))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    protected override void WhenUse(Tile tile)
+    {
+        base.WhenUse(tile);
+        foreach(var indi in tile.Individuals_)
+        {
+            if (Player.AimJudge(indi))
+            {
+                Player.Attack(indi, Player.Strength * AttackRate);
+            }
+        }
+    }
+}

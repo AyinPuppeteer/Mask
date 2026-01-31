@@ -60,16 +60,17 @@ public class BattleManager : MonoBehaviour
             {
                 indi.TimeFresh(Time.deltaTime);
             }
-        }
-        if (Input.GetMouseButtonDown(1))
-        {
-            if(ChoosingSkill != null)
+
+            if (Input.GetMouseButtonDown(1))
             {
-                ChoosingSkill = null;
-            }
-            else if(ChoosingActor != null)
-            {
-                ChoosingActor = null;
+                if (ChoosingSkill != null)
+                {
+                    ChoosingSkill = null;
+                }
+                else if (ChoosingActor != null)
+                {
+                    ChoosingActor = null;
+                }
             }
         }
     }
@@ -83,14 +84,14 @@ public class BattleManager : MonoBehaviour
             {
                 if (ChoosingSkill.JudgeTile(tile))
                 {
-                    ChoosingSkill.Use();
+                    ChoosingSkill.Use(tile);
                     CancelChooseSkill();
                 }
             }
             else if(ChoosingActor != null)
             {
                 //ÒÆ¶¯
-                ChoosingActor.MoveTo(tile);
+                ChoosingActor.MoveTo(tile, 1 + ChoosingActor.Dexterity * 0.01f);
                 CancelChooseActor();
             }
             else
