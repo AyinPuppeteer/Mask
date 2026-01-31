@@ -156,6 +156,10 @@ public class Individual : MonoBehaviour
     }
     #endregion
 
+    private bool Acting;//是否处于行动状态
+    public bool Acting_ { get => Acting; set => Acting = value; }
+    public bool Controlable => !Acting && !IsFrozen;
+
     public Individual()
     {
         IndividualInit();
@@ -168,12 +172,17 @@ public class Individual : MonoBehaviour
     private void Awake()
     {
         Image = GetComponent<SpriteRenderer>();
+        foreach (var skill in SkillList)
+        {
+            skill.SetPlayer(this);
+        }
     }
 
     private void Start()
     {
         Health = MaxHealth;
         Mana = MaxMana;
+        Instantiate(BattleManager.Instance.HealthBarOb, transform.position, Quaternion.identity, transform).GetComponent<HealthBar>().SetIndividual(this);
         IndividualStart();
     }
     protected virtual void IndividualStart()
@@ -238,7 +247,7 @@ public class Individual : MonoBehaviour
         Health = Math.Max(Health - (int)damage, 0);
         if (Health <= 0)
         {
-            Destroy(gameObject);
+            DeadSolve();
         }
         BattleManager.Instance.TextJump(transform.position, ((int)damage).ToString(), Color.red);
         return (int)damage;

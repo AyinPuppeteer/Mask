@@ -56,8 +56,8 @@ public class LevelManager : MonoBehaviour
                                      { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                                      { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
                                      { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
-        pack.AddIndividual("见习战士", 1, 1);
-        pack.AddIndividual("见习战士", 3, 3);
+        pack.AddIndividual("见习战士", 5, 5);
+        pack.AddIndividual("骷髅", 6, 6);
         pack.MapPack_ = map;
         return pack;
     }

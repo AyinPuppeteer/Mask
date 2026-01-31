@@ -27,7 +27,7 @@ public class BasicAttack : Skill
     public override bool JudgeTile(Tile tile)
     {
         if (!base.JudgeTile(tile)) return false;
-        if (!TileManager.Instance.RangeJudge(tile, Player.Row - Distance, Player.Column - Distance, Distance * 2 + 1, Distance * 2 + 1)) return false;
+        if (Player.InTile_.MaxDis(tile) > Distance) return false;
         foreach(var indi in tile.Individuals_)
         {
             if (Player.AimJudge(indi))
@@ -41,7 +41,8 @@ public class BasicAttack : Skill
     protected override void WhenUse(Tile tile)
     {
         base.WhenUse(tile);
-        BattleManager.Instance.CreateEffect(0, tile.transform.position);
+        (Player as Actor).Acting_ = true;
+        BattleManager.Instance.CreateEffect(0, tile.transform.position).PlayAnim("AxeAttack");
         DOTween.To(() => 0, x => { }, 0, AnimTime).OnComplete(() =>
         {
             foreach (var indi in tile.Individuals_)
@@ -51,6 +52,7 @@ public class BasicAttack : Skill
                     Player.Attack(indi, Player.Strength * AttackRate);
                 }
             }
+            (Player as Actor).Acting_ = false;
         });
     }
 }

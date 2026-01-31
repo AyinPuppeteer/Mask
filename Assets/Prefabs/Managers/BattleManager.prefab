@@ -58,6 +58,7 @@ MonoBehaviour:
   - {fileID: 954129473592643607, guid: 1f16d68a663fdf64eb85cfc8b9314628, type: 3}
   - {fileID: 2330817522336577730, guid: d0eac2ad89c93a5448a73f7f8fbfe37a, type: 3}
   - {fileID: 4108853820377883532, guid: 51b416c4d65ca1c4fb3042b02174e153, type: 3}
+  HealthBarOb: {fileID: 210584691449745837, guid: d6cb0ae08cc01a249a8620fff92817e0, type: 3}
 --- !u!114 &7304609490655038807
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,6 +74,7 @@ MonoBehaviour:
   IndividualObs:
   - {fileID: 5797666855175130918, guid: 46bb20ee55d54d946aad9a56382e6e58, type: 3}
   - {fileID: 5797666855175130918, guid: 65e0844adb29b224bb7662b37d3079b9, type: 3}
+  - {fileID: 5797666855175130918, guid: 967cab99fd2b76943aca20e7023f5825, type: 3}
   NormalMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   HighLightMat: {fileID: 2100000, guid: 8df9023c87bf7a84f8918aef1aa0177c, type: 2}
 --- !u!1001 &7579193953524376810

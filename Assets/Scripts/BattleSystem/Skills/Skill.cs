@@ -69,7 +69,7 @@ public class Skill
 
     public virtual bool JudgeTile(Tile tile)
     {
-        return false;
+        return true;
     }
     #endregion
 

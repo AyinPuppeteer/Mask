@@ -13,7 +13,7 @@ public class BattleManager : MonoBehaviour
     private BattlePhase Phase = BattlePhase.执行;//当前阶段
     public BattlePhase Phase_ => Phase;
     private float PhaseTimer;//当前阶段的剩余时间
-    private float PhaseTime = 5f;//一个阶段的时间
+    private float PhaseTime = 50f;//一个阶段的时间
     [SerializeField]
     private TextMeshProUGUI PanelTimer;//面板计时器
     [SerializeField]
@@ -32,6 +32,8 @@ public class BattleManager : MonoBehaviour
 
     [SerializeField]
     private List<GameObject> EffectOb = new();//特效物体
+
+    public GameObject HealthBarOb;//血条物体
 
     public static BattleManager Instance;
 
@@ -65,9 +67,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public GameObject CreateEffect(int t, Vector3 pos)
+    public EffectManager CreateEffect(int t, Vector3 pos)
     {
-        return Instantiate(EffectOb[t], transform.position, Quaternion.identity, transform);
+        return Instantiate(EffectOb[t], pos, Quaternion.identity, transform).GetComponent<EffectManager>();
     }
 
     private void Update()
@@ -165,6 +167,7 @@ public class BattleManager : MonoBehaviour
     public void ChooseSkill(Skill skill)
     {
         ChoosingSkill = skill;
+        ChoosingSkill.Choose();
     }
     public void CancelChooseSkill()
     {
