@@ -41,6 +41,11 @@ public class Individual : MonoBehaviour
     public int Mana_ => Mana;
     protected int MaxMana;//最大魔力值
     public int MaxMana_ => MaxMana;
+
+    public void UseMana(int cost)
+    {
+        Mana -= cost;
+    }
     #endregion
 
     #region 灵巧

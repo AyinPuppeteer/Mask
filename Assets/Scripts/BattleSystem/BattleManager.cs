@@ -49,16 +49,39 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            if(ChoosingSkill != null)
+            {
+                ChoosingSkill = null;
+            }
+            else if(ChoosingActor != null)
+            {
+                ChoosingActor = null;
+            }
+        }
+    }
+
     #region 有关选择与交互的脚本
     public void ChooseTile(Tile tile)
     {
         if(Phase == BattlePhase.执行)
         {
-            if(ChoosingActor != null)
+            if(ChoosingSkill != null)
+            {
+                if (ChoosingSkill.JudgeTile(tile))
+                {
+                    ChoosingSkill.WhenUse();
+                    CancelChooseSkill();
+                }
+            }
+            else if(ChoosingActor != null)
             {
                 //移动
                 ChoosingActor.MoveTo(tile);
-                ChoosingActor = null;
+                CancelChooseActor();
             }
             else
             {
@@ -72,10 +95,25 @@ public class BattleManager : MonoBehaviour
             }
         }
     }
+
     public void ChooseActor(Actor actor)
     {
         ChoosingActor = actor;
         //选中高亮
+    }
+    public void CancelChooseActor()
+    {
+        ChoosingActor = null;
+        //取消高亮
+    }
+
+    public void ChooseSkill(Skill skill)
+    {
+        ChoosingSkill = skill;
+    }
+    public void CancelChooseSkill()
+    {
+        ChoosingSkill = null;
     }
     #endregion
 
