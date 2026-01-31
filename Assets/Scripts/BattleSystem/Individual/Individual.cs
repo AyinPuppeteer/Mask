@@ -14,6 +14,9 @@ public class Individual : MonoBehaviour
     protected Career Career;//职业
     public Career Career_ { get => Career; set => Career = value; }
 
+    [SerializeField]
+    private SpriteRenderer Image;
+
     #region 力量
     public int Strength => (int)(InitialStrength * StrengthPercent + StrengthBonus);
     protected int InitialStrength;
@@ -61,7 +64,7 @@ public class Individual : MonoBehaviour
     public int MaxMana_ => MaxMana;
 
     protected float ManaRate = 0.5f;//魔力恢复速率
-    public float ManaTimer;//魔力回复计时器
+    protected float ManaTimer;//魔力回复计时器
 
     public void UseMana(int cost)
     {
@@ -93,8 +96,12 @@ public class Individual : MonoBehaviour
 
     //技能列表
     protected List<Skill> SkillList = new();
+    public List<Skill> SkillList_ => SkillList;
 
     protected Tile InTile;//所处的格子
+    public Tile InTile_ => InTile;
+    public int Row => InTile.Row_;
+    public int Column => InTile.Column_;
     public void SetTile(Tile tile) => InTile = tile;
 
     #region 基本Buff
@@ -273,6 +280,11 @@ public class Individual : MonoBehaviour
         return tween;
     }
     #endregion
+
+    public void SetMat(Material basemat)
+    {
+        Image.material = new(basemat);
+    }
 }
 
 public enum Career
