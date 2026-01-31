@@ -88,4 +88,81 @@ public class TileManager : MonoBehaviour
             if (tile != null) tile.whenChosen(true);
         }
     }
+
+    private void TileChooseSquare(int length,int width,Vector2 position) { 
+        Tile centerTile = GetTile(position);
+
+        centerTile.whenChosen(true);//选中高亮方框中心
+
+        int row = centerTile.Row_;
+        int colum = centerTile.Column_;
+
+        if (length % 2 != 0)
+        {
+            length = (length - 1) / 2;
+        }
+        else
+        {
+            length /= 2;
+        }
+        if (width % 2 != 0)
+        {
+            width = (width - 1) / 2;
+        }
+        else
+        {
+            width /= 2;
+        }
+            for (int i = row - length; i <= row + length; i++)
+            {
+                for (int j = colum - width; j <= colum + width; j++)
+                {
+                    Tile tile = tileList[i, j];
+                    tile.Highlight(true);
+                }
+            }
+    }
+
+    private void TileChooseLine(int length,Vector2 position)
+    {
+        Tile centerTile = GetTile(position);
+        Tile actorTile = BattleManager.Instance.ChoosingActor_.GetComponentInParent<Tile>();
+        if (Mathf.Abs (centerTile.Row_-actorTile.Row_)  > Mathf.Abs( centerTile.Column_-actorTile.Column_))
+        {
+            if (centerTile.Row_ > actorTile.Row_) {
+                for (int i = actorTile.Row_; i <= actorTile.Row_ + length; i++)
+                {
+                    tileList[i, actorTile.Column_].Highlight(true);
+                }
+                tileList[actorTile.Row_ + length, actorTile.Column_].whenChosen(true);//选中条形高亮末端
+            }//方向右
+            else
+            {
+                for (int i = actorTile.Row_; i >= actorTile.Row_ - length; i--)
+                {
+                    tileList[i, actorTile.Column_].Highlight(true);
+                }
+                tileList[actorTile.Row_ - length, actorTile.Column_].whenChosen(true);//选中条形高亮末端
+            }//方向左
+        }
+
+        if (Mathf.Abs(centerTile.Row_ - actorTile.Row_) < Mathf.Abs(centerTile.Column_ - actorTile.Column_))
+        {
+            if (centerTile.Column_ > actorTile.Column_) {
+                for (int j = actorTile.Row_; j <= actorTile.Row_ + length; j++)
+                {
+                    tileList[actorTile.Row_, j].Highlight(true);
+                }
+                tileList[actorTile.Row_, actorTile.Column_ + length].whenChosen(true);//选中条形高亮末端
+            } //方向上
+            else
+            {
+                for (int j = actorTile.Row_; j >= actorTile.Row_ - length; j++)
+                {
+                    tileList[actorTile.Row_, j].Highlight(true);
+                }
+                tileList[actorTile.Row_, actorTile.Column_ - length].whenChosen(true);//选中条形高亮末端
+            }//方向下
+        }
+    }
 }

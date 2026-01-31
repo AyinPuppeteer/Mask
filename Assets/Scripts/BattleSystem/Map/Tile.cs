@@ -8,6 +8,9 @@ public class Tile : MonoBehaviour
     private TileType Type;
 
     private int Row, Column;
+
+    [SerializeField]
+    private SpriteRenderer spriteRenderer;
     public int Row_ => Row;
     public int Column_ => Column;
 
@@ -19,6 +22,7 @@ public class Tile : MonoBehaviour
         Type = type;
         Row = row;
         Column = column;
+        spriteRenderer.sprite = tileSprite;
     }
 
     public float Distance(Individual indi)
@@ -31,6 +35,17 @@ public class Tile : MonoBehaviour
         if (isChosen)
         {
             BattleManager.Instance.ChooseTile(this);
+        }
+    }
+    public void Highlight(bool isHighlight)
+    {
+        if (isHighlight)
+        {
+            spriteRenderer.color = new Color(0.4f, 0.2f, 0.2f);
+        }
+        else
+        {
+            spriteRenderer.color = new Color(1f, 1f, 1f);
         }
     }
 }
