@@ -9,29 +9,31 @@ public class TileManager : MonoBehaviour
     private GameObject tilePrefab;
     [SerializeField]
     private Sprite[] spriteList;//贴图列表
-    [SerializeField]
+
+    public int maxHeight { get; private set; }
     public int maxWidth{ get; private set; }
-    [SerializeField]
-    public int maxHeight{ get; private set; }
 
-    private List<GameObject> tileList = new List<GameObject>();//地图格子实体列表
+    private Tile[,] tileList;//地图格子实体列表
+    public Tile GetTile(int x, int y)
+    {
+        if(x > 0 && y > 0 && maxHeight >= x && maxWidth >= y)
+        {
+            return tileList[x, y];
+        }
+        else
+        {
+            return null;
+        }
+    }
 
-    private Tile tile;
     private Camera main2DCamera;
+
+    public static TileManager Instance { get; private set; }
+
     private void Awake()
     {
         main2DCamera = Camera.main;
-        tile = tilePrefab.GetComponent<Tile>();
-    }
-    private void Start()
-    {
-        if (tile == null)
-        {
-            Debug.LogError("Tile component not found on the tilePrefab.");
-        }
-        maxWidth = 64;
-        maxHeight = 64;
-        GenerateMap();
+        Instance = this;
     }
 
     private void Update()
@@ -39,15 +41,32 @@ public class TileManager : MonoBehaviour
         TileChoose();//检测选中地图高亮显示
     }
 
-    private void GenerateMap()
+    public void GenerateMap(MapPack pack)
     {
-        for (int i =0;i < maxWidth; i++)
+        if(tileList != null)
         {
-            for(int j = 0; j < maxHeight; j++)
+            Debug.LogError("重复加载地图！");
+        }
+        else if (pack == null || pack.Tiles == null)
+        {
+            Debug.LogWarning("地图规格未设置！");
+        }
+        else
+        {
+            maxWidth = pack.Tiles.GetLength(1);
+            maxHeight = pack.Tiles.GetLength(0);
+
+            tileList = new Tile[maxWidth, maxHeight];
+
+            for (int i = 0; i < maxHeight; i++)
             {
-                tile.Initialize("Grass", i*j+j, spriteList[0]);
-                GameObject newtile = Instantiate(tilePrefab, this.transform.position*0.16f + new Vector3((i+0.5f) * 0.16f, (j+0.5f) * 0.16f,0), Quaternion.identity,this.transform);
-                tileList.Add(newtile);
+                for (int j = 0; j < maxWidth; j++)
+                {
+                    GameObject ob = Instantiate(tilePrefab, transform.position + new Vector3((i - maxHeight / 2.0f) * 0.16f, (j - maxWidth / 2.0f) * 0.16f, 0), Quaternion.identity, transform);
+                    Tile tile = ob.GetComponent<Tile>();
+                    tile.Initialize((TileType)pack.Tiles[i, j], i, j, spriteList[0]);
+                    tileList[i, j] = tile;
+                }
             }
         }
     }
@@ -56,31 +75,15 @@ public class TileManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            Vector3 mouseWorldPos = main2DCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            //Camera main2DCamera = Camera.main;
-            Vector3 mouseScreenPos = Input.mousePosition;
-            Vector3 mouseWorldPos = main2DCamera.ScreenToWorldPoint(new Vector3(
-            mouseScreenPos.x,
-            mouseScreenPos.y,
-            0));
+            int SelectIndexX = Mathf.FloorToInt((mouseWorldPos.x - transform.position.x) / 0.16f + maxHeight / 2.0f);
+            int SelectIndexY = Mathf.FloorToInt((mouseWorldPos.y - transform.position.y) / 0.16f + maxWidth / 2.0f);
 
-
-            int SelectIndexX = Mathf.FloorToInt((mouseWorldPos.x - this.transform.position.x * 0.16f) / 0.16f);
-            int SelectIndexY = Mathf.FloorToInt((mouseWorldPos.y - this.transform.position.y * 0.16f) / 0.16f);
-
-
-            int SelectIndex = SelectIndexX* maxHeight+SelectIndexY;
-            Debug.Log("Selected Tile Index: " + SelectIndex);
-
-            tile = tileList[SelectIndex].GetComponent<Tile>();
-            tile.whenChosen(true);
+            if(SelectIndexX < maxHeight || SelectIndexY < maxWidth)
+            {
+                tileList[SelectIndexX, SelectIndexY].whenChosen(true);
+            }
         }
-    }
-
-    public Tile PositionToTile(Vector2 vec)
-    {
-        int SelectIndex = Mathf.FloorToInt((vec.x-1) * maxHeight + vec.y);
-        tile = tileList[SelectIndex].GetComponent<Tile>();
-        return tile;
     }
 }

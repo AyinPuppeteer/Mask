@@ -5,22 +5,26 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
     [SerializeField]
-    private string type;
+    private TileType Type;
+
+    private int Row, Column;
+    public int Row_ => Row;
+    public int Column_ => Column;
+
     [SerializeField]
-    private int index;
-    [SerializeField]
-    private SpriteRenderer renderer;
+    private SpriteRenderer Renderer;
 
     private Color color;
 
-    public void Initialize(string tileType, int selectIndex, Sprite tileSprite)
+    public void Initialize(TileType type, int row, int column, Sprite tileSprite)
     {
-        type = tileType;
-        index = selectIndex;
-        renderer = GetComponent<SpriteRenderer>();
-        if (renderer != null)
+        Type = type;
+        Row = row;
+        Column = column;
+        Renderer = GetComponent<SpriteRenderer>();
+        if (Renderer != null)
         {
-            renderer.sprite = tileSprite;
+            Renderer.sprite = tileSprite;
         }
         else
         {
@@ -31,10 +35,11 @@ public class Tile : MonoBehaviour
     {
         if (isChosen)
         {
-            renderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
+            Renderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
 
             Actor actor = GetComponentInChildren<Actor>();
-            if (actor != null&&!actor.Acting_) {
+            if (actor != null && !actor.Acting_) 
+            {
                 if(BattleManager.Instance.ChoosingActor_!=null)
                 BattleManager.Instance.ChoosingActor_.Highlight(false);//取消之前选中的高亮
 
@@ -44,7 +49,13 @@ public class Tile : MonoBehaviour
         }
         else
         {
-            renderer.color = new Color(0,0,0,0);
+            Renderer.color = new Color(0,0,0,0);
         }
     }
+}
+
+//方格类型
+public enum TileType
+{
+    陆地, 水
 }

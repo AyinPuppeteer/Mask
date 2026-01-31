@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
-    private LevelPack LevelNow = new();
+    private LevelPack LevelNow;
 
     private int Turn;//当前回合数
     private BattlePhase Phase = BattlePhase.分析;//当前状态
@@ -27,7 +27,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
-        //SolidManager生成土地
+        SetLevelPack(LevelManager.ReturnPack());
+        TileManager.Instance.GenerateMap(LevelNow.MapPack_);//生成土地
         CreateIndividualWhenSatrt();
     }
 

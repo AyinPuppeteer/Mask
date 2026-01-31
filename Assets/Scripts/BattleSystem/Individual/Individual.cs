@@ -5,10 +5,10 @@ using UnityEngine;
 //单位的共同父类
 public class Individual : MonoBehaviour
 {
-    private string Name;//名字
+    protected string Name;//名字
     public string Name_ { get => Name; }
 
-    private Career Career;//职业
+    protected Career Career;//职业
     public Career Career_ { get => Career; set => Career = value; }
 
     #region 力量

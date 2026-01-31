@@ -13,7 +13,11 @@ public class LevelManager : MonoBehaviour
 
     public static LevelPack ReturnPack()
     {
-        return null;
+        LevelPack pack = new();
+        MapPack map = new();
+        map.Tiles = new int[5,5]{ { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0 } };
+        pack.MapPack_ = map;
+        return pack;
     }
 }
 
@@ -38,5 +42,5 @@ public class LevelPack
 //µÿÕº≈‰÷√∞¸
 public class MapPack
 {
-
+    public int[,] Tiles;
 }
