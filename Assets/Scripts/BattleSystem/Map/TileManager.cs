@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -87,6 +88,15 @@ public class TileManager : MonoBehaviour
             Tile tile = GetTile(mouseWorldPos);
             if (tile != null) tile.whenChosen(true);
         }
+    }
+    
+    public bool RangeJudge(Tile tile, int sx, int sy, int lx, int ly)
+    {
+        if (tile.Row_ >= sx && tile.Row_ < sx + lx && tile.Column_ >= sy && tile.Column_ < sy + ly)
+        {
+            return true;
+        }
+        return false;
     }
 
     #region 控制格子高亮

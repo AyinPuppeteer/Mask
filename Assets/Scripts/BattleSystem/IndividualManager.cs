@@ -7,9 +7,12 @@ public class IndividualManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> IndividualObs = new();
 
-    private List<Individual> Individuals = new();
-    private List<Actor> Actors = new();
-    private List<Enemy> Enemies = new();
+    [SerializeField]
+    private Material NormalMat;
+    public Material NormalMat_ => NormalMat;
+    [SerializeField]
+    private Material HighLightMat;
+    public Material HighLightMat_ => HighLightMat;
 
     public static IndividualManager Instance { get; private set; }
 
@@ -38,18 +41,8 @@ public class IndividualManager : MonoBehaviour
     {
         GameObject model = ReturnIndividual(name);
         if (model == null) return;
-        //如果对应格子已有单位则驳回
         GameObject ob = Instantiate(model, tile.transform.position, Quaternion.identity, tile.transform);
         Individual indi = ob.GetComponent<Individual>();
-        Individuals.Add(indi);
-        if(indi is Actor actor)
-        {
-            Actors.Add(actor);
-        }
-        else if(indi is Enemy enemy)
-        {
-            Enemies.Add(enemy);
-        }
         tile.Individuals_.Add(indi);
         indi.SetTile(tile);
     }
