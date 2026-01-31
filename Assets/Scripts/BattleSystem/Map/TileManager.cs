@@ -89,10 +89,12 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void TileChooseSquare(int length,int width,Vector2 position) { 
-        Tile centerTile = GetTile(position);
+    private void TileChooseSquare(int length,int width,Vector2 position) {
 
-        centerTile.whenChosen(true);//选中高亮方框中心
+        CancelHighlight();//取消之前的高亮
+
+        Tile centerTile = GetTile(position);
+        //centerTile.whenChosen(true);//选中高亮方框中心
 
         int row = centerTile.Row_;
         int colum = centerTile.Column_;
@@ -125,6 +127,8 @@ public class TileManager : MonoBehaviour
 
     private void TileChooseLine(int length,Vector2 position)
     {
+        CancelHighlight();//取消之前的高亮
+
         Tile centerTile = GetTile(position);
         Tile actorTile = BattleManager.Instance.ChoosingActor_.GetComponentInParent<Tile>();
         if (Mathf.Abs (centerTile.Row_-actorTile.Row_)  > Mathf.Abs( centerTile.Column_-actorTile.Column_))
@@ -163,6 +167,17 @@ public class TileManager : MonoBehaviour
                 }
                 tileList[actorTile.Row_, actorTile.Column_ - length].whenChosen(true);//选中条形高亮末端
             }//方向下
+        }
+    }
+
+    private void CancelHighlight()
+    {
+        for (int i = 0; i < maxHeight; i++)
+        {
+            for (int j = 0; j < maxWidth; j++)
+            {
+                tileList[i, j].Highlight(false);
+            }
         }
     }
 }
