@@ -95,6 +95,7 @@ public class Individual : MonoBehaviour
             {
                 Shield -= damage;
                 damage = 0;
+                BattleManager.Instance.TextJump("ÍêÈ«·ÀÓù", Color.blue);
             }
             else
             {
@@ -107,6 +108,7 @@ public class Individual : MonoBehaviour
         {
             DeadSolve();
         }
+        BattleManager.Instance.TextJump(damage.ToString(), Color.red);
         return damage;
     }
 
@@ -127,6 +129,7 @@ public class Individual : MonoBehaviour
     {
         Health += heal;
         Health = Mathf.Min(Health, MaxHealth);
+        BattleManager.Instance.TextJump(heal.ToString(), Color.green);
     }
     #endregion
 

@@ -13,6 +13,12 @@ public class BattleManager : MonoBehaviour
     private Actor ChoosingActor;//选中的角色
     public Actor ChoosingActor_ => ChoosingActor;
 
+    private Skill ChoosingSkill;//选中的技能
+    public Skill ChoosingSkill_ => ChoosingSkill;
+
+    [SerializeField]
+    private GameObject JumpTextOb;//跳动数字物体（如伤害）
+
     public static BattleManager Instance;
 
     private void Awake()
@@ -86,6 +92,13 @@ public class BattleManager : MonoBehaviour
             //失败
             return;
         }
+    }
+
+    public void TextJump(string text, Color color)
+    {
+        GameObject ob = Instantiate(JumpTextOb, transform.position, Quaternion.identity, transform);
+        JumpText jt = ob.GetComponent<JumpText>();
+        jt.SetText(text, color);
     }
 }
 
