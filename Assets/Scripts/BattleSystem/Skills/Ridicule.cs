@@ -12,6 +12,12 @@ public class Ridicule : Skill
         CoolTime = 12f;
     }
 
+    protected override void WhenChoose()
+    {
+        base.WhenChoose();
+        TileManager.Instance.TileChooseSquare(Player.Row - 5, Player.Column - 5, 11, 11);
+    }
+
     public override bool JudgeTile(Tile tile)
     {
         if (!base.JudgeTile(tile)) return false;

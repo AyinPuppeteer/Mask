@@ -65,14 +65,6 @@ public class BattleManager : MonoBehaviour
     private void Update()
     {
         PanelTimer.text = $"{Mathf.FloorToInt(PhaseTimer):D2} : {Mathf.FloorToInt((PhaseTimer - Mathf.FloorToInt(PhaseTimer)) * 60):D2}";
-        if (Phase == BattlePhase.分析 || Phase == BattlePhase.执行)
-        {
-            PhaseIcon.sprite = PhaseIcons[0];
-        }
-        else
-        {
-            PhaseIcon.sprite = PhaseIcons[1];
-        }
 
         if (Phase == BattlePhase.执行 || Phase == BattlePhase.敌人行动)
         {
@@ -91,12 +83,14 @@ public class BattleManager : MonoBehaviour
                             PhaseTimer = PhaseTime;
                             if (ChoosingActor != null) CancelChooseActor();
                             if (ChoosingSkill != null) CancelChooseSkill();
+                            PhaseIcon.sprite = PhaseIcons[1];
                             break;
                         }
                     case BattlePhase.敌人行动:
                         {
                             Phase = BattlePhase.分析;
                             PhaseTimer = PhaseTime;
+                            PhaseIcon.sprite = PhaseIcons[0];
                             break;
                         }
                 }
@@ -150,12 +144,14 @@ public class BattleManager : MonoBehaviour
         ChoosingActor = actor;
         actor.SetMat(IndividualManager.Instance.HighLightMat_);
         TileManager.Instance.TileChooseSquare(actor.Row - 1, actor.Column - 1, 3, 3);
+        PhaseIcon.sprite = actor.GetComponent<SpriteRenderer>().sprite;
     }
     public void CancelChooseActor()
     {
         ChoosingActor.SetMat(IndividualManager.Instance.NormalMat_);
         ChoosingActor = null;
         TileManager.Instance.CancelHighlight();
+        PhaseIcon.sprite = PhaseIcons[0];
     }
 
     public void ChooseSkill(Skill skill)
