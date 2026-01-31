@@ -11,7 +11,7 @@ public class Actor : Individual
     private SpriteRenderer spriteRenderer;
     private bool Acting;//是否处于行动状态
     public bool Acting_ { get => Acting; set => Acting = value; }
-    public bool Controlable => !Acting;
+    public bool Controlable => !Acting && !IsFrozen;
 
     protected override void IndividualInit()
     {

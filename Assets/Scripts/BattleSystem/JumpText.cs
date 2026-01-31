@@ -11,7 +11,7 @@ public class JumpText : MonoBehaviour
     private float Height = 0.15f;
     private float Distance;
 
-    private float Duration = 0.5f;
+    private float Duration = 0.7f;
     private float Timer;
 
     private Vector3 InitialPos;
@@ -24,7 +24,7 @@ public class JumpText : MonoBehaviour
 
     private void Start()
     {
-        Distance = Random.Range(-1f, 1f);
+        Distance = Random.Range(-0.15f, 0.15f);
         InitialPos = transform.position;
     }
 
@@ -32,8 +32,12 @@ public class JumpText : MonoBehaviour
     {
         if ((Timer += Time.deltaTime) >= Duration)
         {
-            transform.position = InitialPos + new Vector3(Distance, Height, 0);
-            Text.alpha = 0f;
+            if(Timer >= Duration * 1.3f)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Text.alpha = 1.3f - Timer / Duration;
         }
         else
         {
@@ -42,10 +46,6 @@ public class JumpText : MonoBehaviour
             float a = -4 * Height / (Distance * Distance);
             pos.y = a * pos.x * pos.x - a * Distance * pos.x;
             transform.position = pos + InitialPos;
-            if(pos.x >= Distance * 0.7f)
-            {
-                Text.alpha = (1 - pos.x / Distance) / 0.3f;
-            }
         }
     }
 }

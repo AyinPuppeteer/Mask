@@ -55,19 +55,19 @@ public class IndividualManager : MonoBehaviour
     }
 
     #region 获取单位
-    public static List<Individual> ReturnAllIndividuals()
+    public static Individual[] ReturnAllIndividuals()
     {
-        return Instance.Individuals;
+        return Instance.GetComponentsInChildren<Individual>();
     }
 
-    public static List<Actor> ReturnAllActors()
+    public static Actor[] ReturnAllActors()
     {
-        return Instance.Actors;
+        return Instance.GetComponentsInChildren<Actor>();
     }
 
-    public static List<Enemy> ReturnAllEnemys()
+    public static Enemy[] ReturnAllEnemys()
     {
-        return Instance.Enemies;
+        return Instance.GetComponentsInChildren<Enemy>();
     }
     #endregion
 }
