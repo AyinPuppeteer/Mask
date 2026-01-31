@@ -139,15 +139,18 @@ public class Individual : MonoBehaviour
     #endregion
 
     #region ¹ÜÀíÒÆ¶¯
-    public virtual void MoveTo(Tile tile, float time = 0.5f)
+    public virtual Tween MoveTo(Tile tile, float speed = 1f)
     {
-        transform.DOMove(tile.transform.position, time).OnUpdate(() =>
+        var tween = transform.DOMove(tile.transform.position, tile.Distance(this) / speed);
+        tween.OnUpdate(() =>
         {
+            Tile newtile = TileManager.Instance.GetTile(transform.position);
             InTile.Individuals_.Remove(this);
-            InTile = TileManager.Instance.GetTile(transform.position);
+            InTile = newtile;
             transform.parent = InTile.transform;
             InTile.Individuals_.Add(this);
         });
+        return tween;
     }
     #endregion
 }

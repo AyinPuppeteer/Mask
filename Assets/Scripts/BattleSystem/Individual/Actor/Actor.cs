@@ -34,11 +34,10 @@ public class Actor : Individual
     }
 
     #region ¹ÜÀíÒÆ¶¯
-    public override void MoveTo(Tile tile, float time = 0.5f)
+    public override Tween MoveTo(Tile tile, float speed = 1f)
     {
         Acting = true;
-        DOTween.To(() => 0, x => { }, 0, time).OnComplete(() => Acting = false);
-        base.MoveTo(tile, time);
+        return base.MoveTo(tile, speed).OnComplete(() => Acting = false);
     }
     #endregion
 }

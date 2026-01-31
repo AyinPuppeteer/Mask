@@ -17,6 +17,7 @@ public class LevelManager : MonoBehaviour
         MapPack map = new();
         map.Tiles = new int[5, 7]{ { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 0, 0, 0 } };
         pack.AddIndividual("²âÊÔ½ÇÉ«", 1, 1);
+        pack.AddIndividual("²âÊÔ½ÇÉ«", 3, 3);
         pack.MapPack_ = map;
         return pack;
     }

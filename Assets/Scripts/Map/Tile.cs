@@ -20,6 +20,12 @@ public class Tile : MonoBehaviour
         Row = row;
         Column = column;
     }
+
+    public float Distance(Individual indi)
+    {
+        return Vector2.Distance(transform.position, indi.transform.position);
+    }
+
     public void whenChosen(bool isChosen)
     {
         if (isChosen)
