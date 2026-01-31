@@ -1,8 +1,9 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class BattleManager : MonoBehaviour
 {
@@ -10,8 +11,15 @@ public class BattleManager : MonoBehaviour
 
     private int Turn;//当前回合数
     private BattlePhase Phase = BattlePhase.执行;//当前阶段
+    public BattlePhase Phase_ => Phase;
     private float PhaseTimer;//当前阶段的剩余时间
-    private float PhaseTime = 10f;//一个阶段的时间
+    private float PhaseTime = 5f;//一个阶段的时间
+    [SerializeField]
+    private TextMeshProUGUI PanelTimer;//面板计时器
+    [SerializeField]
+    private Image PhaseIcon;
+    [SerializeField]
+    private List<Sprite> PhaseIcons = new();
 
     private Actor ChoosingActor;//选中的角色
     public Actor ChoosingActor_ => ChoosingActor;
@@ -39,6 +47,8 @@ public class BattleManager : MonoBehaviour
         SetLevelPack(LevelManager.ReturnPack());
         TileManager.Instance.GenerateMap(LevelNow.MapPack_);//生成土地
         CreateIndividualWhenSatrt();
+        Phase = BattlePhase.分析;
+        PhaseTimer = PhaseTime;
     }
 
     //战斗开始时生成单位
@@ -54,9 +64,19 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
+        PanelTimer.text = $"{Mathf.FloorToInt(PhaseTimer):D2} : {Mathf.FloorToInt((PhaseTimer - Mathf.FloorToInt(PhaseTimer)) * 60):D2}";
+        if (Phase == BattlePhase.分析 || Phase == BattlePhase.执行)
+        {
+            PhaseIcon.sprite = PhaseIcons[0];
+        }
+        else
+        {
+            PhaseIcon.sprite = PhaseIcons[1];
+        }
+
         if (Phase == BattlePhase.执行 || Phase == BattlePhase.敌人行动)
         {
-            foreach(var indi in IndividualManager.ReturnAllIndividuals())
+            foreach (var indi in IndividualManager.ReturnAllIndividuals())
             {
                 indi.TimeFresh(Time.deltaTime);
             }
@@ -72,7 +92,34 @@ public class BattleManager : MonoBehaviour
                     ChoosingActor = null;
                 }
             }
+
+            if ((PhaseTimer -= Time.deltaTime) <= 0)
+            {
+                switch (Phase)
+                {
+                    case BattlePhase.执行:
+                        {
+                            Phase = BattlePhase.敌人行动;
+                            PhaseTimer = PhaseTime;
+                            if (ChoosingActor != null) CancelChooseActor();
+                            if (ChoosingSkill != null) CancelChooseSkill();
+                            break;
+                        }
+                    case BattlePhase.敌人行动:
+                        {
+                            Phase = BattlePhase.分析;
+                            PhaseTimer = PhaseTime;
+                            break;
+                        }
+                }
+            }
         }
+    }
+
+    public void StartBattle()
+    {
+        Phase = BattlePhase.执行;
+        PhaseTimer = PhaseTime;
     }
 
     #region 有关选择与交互的脚本
@@ -133,14 +180,23 @@ public class BattleManager : MonoBehaviour
     {
         if(IndividualManager.ReturnAllEnemys().Length > 0)
         {
-            //胜利
+            GameWin();
             return;
         }
         else if(IndividualManager.ReturnAllActors().Length > 0)
         {
-            //失败
+            GameLose();
             return;
         }
+    }
+
+    public void GameWin()
+    {
+
+    }
+    public void GameLose()
+    {
+
     }
 
     public void TextJump(Vector3 pos, string text, Color color)
