@@ -99,17 +99,27 @@ public class TileManager : MonoBehaviour
         return false;
     }
 
-    #region 控制格子高亮
-    public void TileChooseSquare(int sx, int sy, int lx, int ly) 
+    public List<Tile> ReturnTiles(int sx, int sy, int lx, int ly)
     {
-        CancelHighlight();//取消之前的高亮
+        List<Tile> tiles = new();
         for (int i = sx; i < sx + lx; i++)
         {
             for (int j = sy; j < sy + ly; j++)
             {
                 Tile tile = GetTile(i, j);
-                if(tile != null) tile.Highlight(true);
+                if (tile != null) tiles.Add(tile);
             }
+        }
+        return tiles;
+    }
+
+    #region 控制格子高亮
+    public void TileChooseSquare(int sx, int sy, int lx, int ly) 
+    {
+        CancelHighlight();//取消之前的高亮
+        foreach(var tile in ReturnTiles(sx, sy, lx, ly))
+        {
+            tile.Highlight(true);
         }
     }
 

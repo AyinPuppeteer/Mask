@@ -25,8 +25,8 @@ public class Tile : MonoBehaviour
     public void Initialize(TileType type, int row, int column, Sprite tileSprite)
     {
         Type = type;
-        Row = row;
-        Column = column;
+        Row = row + 1;
+        Column = column + 1;
         spriteRenderer.sprite = tileSprite;
     }
 
@@ -39,6 +39,11 @@ public class Tile : MonoBehaviour
     public int ManDis(Tile another)
     {
         return Math.Abs(Row - another.Row) + Math.Abs(Column - another.Column);
+    }
+    //获取最长距离（正方形距离）
+    public int MaxDis(Tile another)
+    {
+        return Math.Max(Math.Abs(Row - another.Row), Math.Abs(Column - another.Column));
     }
 
     public void whenChosen(bool isChosen)

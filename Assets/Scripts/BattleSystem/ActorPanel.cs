@@ -11,6 +11,7 @@ public class ActorPanel : MonoBehaviour
     public static ActorPanel Instance;
 
     public Actor Actor => BattleManager.Instance.ChoosingActor_;
+    public Skill Skill => BattleManager.Instance.ChoosingSkill_;
 
     /*
     [SerializeField]
@@ -35,6 +36,13 @@ public class ActorPanel : MonoBehaviour
     private TextMeshProUGUI SkillName1, SkillName2, SkillName3;
     [SerializeField]
     private TextMeshProUGUI BasicAttackName;
+    [SerializeField]
+    private Image Skill1Mask, Skill2Mask, Skill3Mask;
+    [SerializeField]
+    private Image BasicAttackMask;
+
+    [SerializeField]
+    private TextMeshProUGUI SkillDescription;
 
     private void Awake()
     {
@@ -80,22 +88,35 @@ public class ActorPanel : MonoBehaviour
             {
                 BasicAttackName.text = Actor.SkillList_[0].Name_;
                 BasicAttack.gameObject.SetActive(true);
+                BasicAttackMask.fillAmount = Actor.SkillList_[0].CoolPercent;
             }
             if(Actor.SkillList_.Count >= 2)
             {
                 SkillName1.text = Actor.SkillList_[1].Name_;
                 Skill1.gameObject.SetActive(true);
+                Skill1Mask.fillAmount = Actor.SkillList_[1].CoolPercent;
             }
             if (Actor.SkillList_.Count >= 3)
             {
                 SkillName2.text = Actor.SkillList_[2].Name_;
                 Skill2.gameObject.SetActive(true);
+                Skill2Mask.fillAmount = Actor.SkillList_[2].CoolPercent;
             }
             if (Actor.SkillList_.Count >= 4)
             {
                 SkillName3.text = Actor.SkillList_[3].Name_;
                 Skill3.gameObject.SetActive(true);
+                Skill3Mask.fillAmount = Actor.SkillList_[3].CoolPercent;
             }
+        }
+
+        if (Skill != null)
+        {
+            SkillDescription.text = Skill.Description_;
+        }
+        else
+        {
+            SkillDescription.text = "";
         }
     }
 

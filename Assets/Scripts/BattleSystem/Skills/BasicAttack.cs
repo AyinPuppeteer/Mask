@@ -23,7 +23,7 @@ public class BasicAttack : Skill
     public override bool JudgeTile(Tile tile)
     {
         if (!base.JudgeTile(tile)) return false;
-        if (!TileManager.Instance.RangeJudge(tile, Player.Row - Distance, Player.Column - Distance, Distance * 2, Distance * 2)) return false;
+        if (!TileManager.Instance.RangeJudge(tile, Player.Row - Distance, Player.Column - Distance, Distance * 2 + 1, Distance * 2 + 1)) return false;
         foreach(var indi in tile.Individuals_)
         {
             if (Player.AimJudge(indi))

@@ -81,18 +81,6 @@ public class BattleManager : MonoBehaviour
                 indi.TimeFresh(Time.deltaTime);
             }
 
-            if (Input.GetMouseButtonDown(1))
-            {
-                if (ChoosingSkill != null)
-                {
-                    ChoosingSkill = null;
-                }
-                else if (ChoosingActor != null)
-                {
-                    ChoosingActor = null;
-                }
-            }
-
             if ((PhaseTimer -= Time.deltaTime) <= 0)
             {
                 switch (Phase)
@@ -132,13 +120,16 @@ public class BattleManager : MonoBehaviour
                 if (ChoosingSkill.JudgeTile(tile))
                 {
                     ChoosingSkill.Use(tile);
-                    CancelChooseSkill();
                 }
+                CancelChooseSkill();
             }
             else if(ChoosingActor != null)
             {
-                //ÒÆ¶¯
-                ChoosingActor.MoveTo(tile, 1 + ChoosingActor.Dexterity * 0.01f);
+                if(ChoosingActor.InTile_.MaxDis(tile) == 1)
+                {
+                    //ÒÆ¶¯
+                    ChoosingActor.MoveTo(tile, 1 + ChoosingActor.Dexterity * 0.01f);
+                }
                 CancelChooseActor();
             }
             else
@@ -158,11 +149,13 @@ public class BattleManager : MonoBehaviour
     {
         ChoosingActor = actor;
         actor.SetMat(IndividualManager.Instance.HighLightMat_);
+        TileManager.Instance.TileChooseSquare(actor.Row - 1, actor.Column - 1, 3, 3);
     }
     public void CancelChooseActor()
     {
         ChoosingActor.SetMat(IndividualManager.Instance.NormalMat_);
         ChoosingActor = null;
+        TileManager.Instance.CancelHighlight();
     }
 
     public void ChooseSkill(Skill skill)
@@ -172,6 +165,7 @@ public class BattleManager : MonoBehaviour
     public void CancelChooseSkill()
     {
         ChoosingSkill = null;
+        TileManager.Instance.CancelHighlight();
     }
     #endregion
 

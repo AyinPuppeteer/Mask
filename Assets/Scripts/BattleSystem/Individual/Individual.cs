@@ -14,7 +14,6 @@ public class Individual : MonoBehaviour
     protected Career Career;//职业
     public Career Career_ { get => Career; set => Career = value; }
 
-    [SerializeField]
     private SpriteRenderer Image;
 
     #region 力量
@@ -166,6 +165,11 @@ public class Individual : MonoBehaviour
 
     }
 
+    private void Awake()
+    {
+        Image = GetComponent<SpriteRenderer>();
+    }
+
     private void Start()
     {
         Health = MaxHealth;
@@ -192,6 +196,10 @@ public class Individual : MonoBehaviour
         FrozenTimer = Mathf.Max(FrozenTimer - time, 0);
         BuffUpdate(time);
         NatrualMana(time);
+        foreach(var skill in SkillList)
+        {
+            skill.Refresh(time);
+        }
     }
 
     #region 伤害相关
