@@ -89,88 +89,67 @@ public class TileManager : MonoBehaviour
         }
     }
 
-    private void TileChooseSquare(int length,int width,Vector2 position) {
-
+    #region 控制格子高亮
+    public void TileChooseSquare(int sx, int sy, int lx, int ly) 
+    {
         CancelHighlight();//取消之前的高亮
-
-        Tile centerTile = GetTile(position);
-        //centerTile.whenChosen(true);//选中高亮方框中心
-
-        int row = centerTile.Row_;
-        int colum = centerTile.Column_;
-
-        if (length % 2 != 0)
+        for (int i = sx; i < sx + lx; i++)
         {
-            length = (length - 1) / 2;
-        }
-        else
-        {
-            length /= 2;
-        }
-        if (width % 2 != 0)
-        {
-            width = (width - 1) / 2;
-        }
-        else
-        {
-            width /= 2;
-        }
-            for (int i = row - length; i <= row + length; i++)
+            for (int j = sy; j < sy + ly; j++)
             {
-                for (int j = colum - width; j <= colum + width; j++)
-                {
-                    Tile tile = tileList[i, j];
-                    tile.Highlight(true);
-                }
+                Tile tile = GetTile(i, j);
+                if(tile != null) tile.Highlight(true);
             }
+        }
     }
 
-    private void TileChooseLine(int length,Vector2 position)
+    public void TileChooseLine(int sx, int sy, int length)
     {
         CancelHighlight();//取消之前的高亮
 
-        Tile centerTile = GetTile(position);
-        Tile actorTile = BattleManager.Instance.ChoosingActor_.GetComponentInParent<Tile>();
-        if (Mathf.Abs (centerTile.Row_-actorTile.Row_)  > Mathf.Abs( centerTile.Column_-actorTile.Column_))
+        Tile centerTile = GetTile(main2DCamera.ScreenToWorldPoint(Input.mousePosition));
+        if (centerTile == null) return;
+        if (Mathf.Abs (centerTile.Row_- sx)  > Mathf.Abs(centerTile.Column_- sy))
         {
-            if (centerTile.Row_ > actorTile.Row_) {
-                for (int i = actorTile.Row_; i <= actorTile.Row_ + length; i++)
+            if (centerTile.Row_ > sx) 
+            {
+                for (int i = sx; i < sx + length; i++)
                 {
-                    tileList[i, actorTile.Column_].Highlight(true);
+                    Tile tile = GetTile(i, sy);
+                    if (tile != null) tile.Highlight(true);
                 }
-                tileList[actorTile.Row_ + length, actorTile.Column_].whenChosen(true);//选中条形高亮末端
             }//方向右
             else
             {
-                for (int i = actorTile.Row_; i >= actorTile.Row_ - length; i--)
+                for (int i = sx; i > sx - length; i--)
                 {
-                    tileList[i, actorTile.Column_].Highlight(true);
+                    Tile tile = GetTile(i, sy);
+                    if (tile != null) tile.Highlight(true);
                 }
-                tileList[actorTile.Row_ - length, actorTile.Column_].whenChosen(true);//选中条形高亮末端
             }//方向左
         }
-
-        if (Mathf.Abs(centerTile.Row_ - actorTile.Row_) < Mathf.Abs(centerTile.Column_ - actorTile.Column_))
+        else
         {
-            if (centerTile.Column_ > actorTile.Column_) {
-                for (int j = actorTile.Row_; j <= actorTile.Row_ + length; j++)
+            if (centerTile.Column_ > sy)
+            {
+                for (int j = sx; j <= sx + length; j++)
                 {
-                    tileList[actorTile.Row_, j].Highlight(true);
+                    Tile tile = GetTile(sx, j);
+                    if (tile != null) tile.Highlight(true);
                 }
-                tileList[actorTile.Row_, actorTile.Column_ + length].whenChosen(true);//选中条形高亮末端
             } //方向上
             else
             {
-                for (int j = actorTile.Row_; j >= actorTile.Row_ - length; j++)
+                for (int j = sx; j >= sx - length; j++)
                 {
-                    tileList[actorTile.Row_, j].Highlight(true);
+                    Tile tile = GetTile(sx, j);
+                    if (tile != null) tile.Highlight(true);
                 }
-                tileList[actorTile.Row_, actorTile.Column_ - length].whenChosen(true);//选中条形高亮末端
             }//方向下
         }
     }
 
-    private void CancelHighlight()
+    public void CancelHighlight()
     {
         for (int i = 0; i < maxHeight; i++)
         {
@@ -180,4 +159,5 @@ public class TileManager : MonoBehaviour
             }
         }
     }
+    #endregion
 }

@@ -11,6 +11,10 @@ public class Tile : MonoBehaviour
 
     [SerializeField]
     private SpriteRenderer spriteRenderer;
+
+    [SerializeField]
+    private SpriteRenderer HighLight;
+
     public int Row_ => Row;
     public int Column_ => Column;
 
@@ -41,11 +45,11 @@ public class Tile : MonoBehaviour
     {
         if (isHighlight)
         {
-            spriteRenderer.color = new Color(0.4f, 0.2f, 0.2f);
+            HighLight.color = new Color(1f, 1f, 1f, 0.6f);
         }
         else
         {
-            spriteRenderer.color = new Color(1f, 1f, 1f);
+            HighLight.color = new Color(1f, 1f, 1f, 0f);
         }
     }
 }

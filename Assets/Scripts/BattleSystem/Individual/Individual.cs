@@ -218,6 +218,7 @@ public class Individual : MonoBehaviour
                 damage -= Shield;
                 Shield = 0;
             }
+
         }
         Health = Math.Max(Health - (int)damage, 0);
         if (Health <= 0)

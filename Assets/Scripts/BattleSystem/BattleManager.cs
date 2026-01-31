@@ -78,7 +78,7 @@ public class BattleManager : MonoBehaviour
     #region 有关选择与交互的脚本
     public void ChooseTile(Tile tile)
     {
-        if(Phase == BattlePhase.执行)
+        if (Phase == BattlePhase.执行)
         {
             if(ChoosingSkill != null)
             {
@@ -131,12 +131,12 @@ public class BattleManager : MonoBehaviour
     //判断胜利失败条件
     private void CheckGoal()
     {
-        if(IndividualManager.ReturnAllEnemys().Count > 0)
+        if(IndividualManager.ReturnAllEnemys().Length > 0)
         {
             //胜利
             return;
         }
-        else if(IndividualManager.ReturnAllActors().Count > 0)
+        else if(IndividualManager.ReturnAllActors().Length > 0)
         {
             //失败
             return;
