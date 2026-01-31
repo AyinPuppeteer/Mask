@@ -8,7 +8,7 @@ public class Skill
     protected string Name;
     public string Name_ => Name;
 
-    protected string Description;//ÃèÊö
+    protected string Description = "";//ÃèÊö
     public string Description_ => Description;
 
     protected bool IsChoosing;
@@ -16,6 +16,7 @@ public class Skill
     protected float CoolTime;//ÀäÈ´Ê±¼ä
     protected float CoolTimer;//ÀäÈ´¼ÆÊ±Æ÷
     public bool Ready => CoolTimer <= 0;
+    public float CoolPercent => CoolTime == 0 ? 0 : CoolTimer / CoolTime;
 
     protected int ManaCost;//À¶ºÄ
     public int ManaCost_ => ManaCost;
@@ -25,6 +26,7 @@ public class Skill
     public Skill()
     {
         SkillInit();
+        CoolTimer = CoolTime;
     }
     protected virtual void SkillInit()
     {
@@ -34,11 +36,6 @@ public class Skill
     public void SetPlayer(Individual player)
     {
         Player = player;
-    }
-
-    public void WhenStart()
-    {
-        CoolTimer = CoolTime;
     }
 
     public void Refresh(float deltatime)

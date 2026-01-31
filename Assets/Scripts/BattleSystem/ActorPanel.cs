@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 //角色面板（显示角色数值和技能的面板）
 public class ActorPanel : MonoBehaviour
@@ -10,7 +11,9 @@ public class ActorPanel : MonoBehaviour
     public static ActorPanel Instance;
 
     public Actor Actor => BattleManager.Instance.ChoosingActor_;
+    public Skill Skill => BattleManager.Instance.ChoosingSkill_;
 
+    /*
     [SerializeField]
     private TextMeshProUGUI HealthText;
     [SerializeField]
@@ -19,6 +22,27 @@ public class ActorPanel : MonoBehaviour
     private TextMeshProUGUI StrengthText;
     [SerializeField]
     private TextMeshProUGUI IntelligenceText;
+    */
+
+    //开始战斗按钮
+    [SerializeField]
+    private Button StartButton;
+
+    [SerializeField]
+    private Button Skill1, Skill2, Skill3;
+    [SerializeField]
+    private Button BasicAttack;
+    [SerializeField]
+    private TextMeshProUGUI SkillName1, SkillName2, SkillName3;
+    [SerializeField]
+    private TextMeshProUGUI BasicAttackName;
+    [SerializeField]
+    private Image Skill1Mask, Skill2Mask, Skill3Mask;
+    [SerializeField]
+    private Image BasicAttackMask;
+
+    [SerializeField]
+    private TextMeshProUGUI SkillDescription;
 
     private void Awake()
     {
@@ -37,12 +61,62 @@ public class ActorPanel : MonoBehaviour
 
     public void Refresh()
     {
-        if(Actor != null)
+        if (BattleManager.Instance.Phase_ == BattlePhase.分析)
         {
+            StartButton.interactable = true;
+        }
+        else
+        {
+            StartButton.interactable = false;
+        }
+
+        BasicAttack.gameObject.SetActive(false);
+        Skill1.gameObject.SetActive(false);
+        Skill2.gameObject.SetActive(false);
+        Skill3.gameObject.SetActive(false);
+
+        if (Actor != null)
+        {
+            /*
             StrengthText.text = Actor.Strength.ToString();
             HealthText.text = Actor.Health_ + " / " + Actor.MaxHealth_;
             ManaText.text = Actor.Mana_ + " / " + Actor.MaxMana_;
             IntelligenceText.text = Actor.Intelligence.ToString();
+            */
+
+            if(Actor.SkillList_.Count >= 1)
+            {
+                BasicAttackName.text = Actor.SkillList_[0].Name_;
+                BasicAttack.gameObject.SetActive(true);
+                BasicAttackMask.fillAmount = Actor.SkillList_[0].CoolPercent;
+            }
+            if(Actor.SkillList_.Count >= 2)
+            {
+                SkillName1.text = Actor.SkillList_[1].Name_;
+                Skill1.gameObject.SetActive(true);
+                Skill1Mask.fillAmount = Actor.SkillList_[1].CoolPercent;
+            }
+            if (Actor.SkillList_.Count >= 3)
+            {
+                SkillName2.text = Actor.SkillList_[2].Name_;
+                Skill2.gameObject.SetActive(true);
+                Skill2Mask.fillAmount = Actor.SkillList_[2].CoolPercent;
+            }
+            if (Actor.SkillList_.Count >= 4)
+            {
+                SkillName3.text = Actor.SkillList_[3].Name_;
+                Skill3.gameObject.SetActive(true);
+                Skill3Mask.fillAmount = Actor.SkillList_[3].CoolPercent;
+            }
+        }
+
+        if (Skill != null)
+        {
+            SkillDescription.text = Skill.Description_;
+        }
+        else
+        {
+            SkillDescription.text = "";
         }
     }
 

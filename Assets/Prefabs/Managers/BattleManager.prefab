@@ -46,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 995793af7a2319e43a86bcb18641e6a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PanelTimer: {fileID: 0}
+  PhaseIcon: {fileID: 0}
+  PhaseIcons: []
   JumpTextOb: {fileID: 4457622411012738658, guid: 9d60aaefe514620468cfda10e1d82ec8, type: 3}
 --- !u!114 &7304609490655038807
 MonoBehaviour:
@@ -61,6 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IndividualObs:
   - {fileID: 5797666855175130918, guid: 46bb20ee55d54d946aad9a56382e6e58, type: 3}
+  - {fileID: 5797666855175130918, guid: 65e0844adb29b224bb7662b37d3079b9, type: 3}
   NormalMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
   HighLightMat: {fileID: 2100000, guid: 8df9023c87bf7a84f8918aef1aa0177c, type: 2}
 --- !u!1001 &7579193953524376810

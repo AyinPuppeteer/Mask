@@ -17,5 +17,6 @@ public class TraineeWarrior : Actor
         Shield = 40;
 
         SkillList.Add(new BasicAttack(0.25f, 1));
+        SkillList.Add(new Ridicule());
     }
 }
