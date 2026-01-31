@@ -30,6 +30,9 @@ public class BattleManager : MonoBehaviour
     [SerializeField]
     private GameObject JumpTextOb;//跳动数字物体（如伤害）
 
+    [SerializeField]
+    private List<GameObject> EffectOb = new();//特效物体
+
     public static BattleManager Instance;
 
     private void Awake()
@@ -60,6 +63,11 @@ public class BattleManager : MonoBehaviour
             string name = pair.Value;
             IndividualManager.Instance.CreateIndividual(name, tile);//生成单位
         }
+    }
+
+    public GameObject CreateEffect(int t, Vector3 pos)
+    {
+        return Instantiate(EffectOb[t], transform.position, Quaternion.identity, transform);
     }
 
     private void Update()

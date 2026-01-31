@@ -16,7 +16,7 @@ public class TraineeWarrior : Actor
         InitialDexterity = 20;
         Shield = 40;
 
-        SkillList.Add(new BasicAttack(0.25f, 1));
+        SkillList.Add(new BasicAttack(0.25f, 1, 1f));
         SkillList.Add(new Ridicule());
     }
 }

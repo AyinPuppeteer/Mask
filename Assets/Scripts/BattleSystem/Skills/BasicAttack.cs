@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,11 +9,13 @@ public class BasicAttack : Skill
 {
     private float AttackRate;//攻击比率
     private int Distance;//攻击范围
+    private float AnimTime;//动画时间
 
-    public BasicAttack(float rate, int distance) : base()
+    public BasicAttack(float rate, int distance, float animtime) : base()
     {
         AttackRate = rate;
         Distance = distance;
+        AnimTime = animtime;
     }
 
     protected override void SkillInit()
@@ -38,12 +41,16 @@ public class BasicAttack : Skill
     protected override void WhenUse(Tile tile)
     {
         base.WhenUse(tile);
-        foreach(var indi in tile.Individuals_)
+        BattleManager.Instance.CreateEffect(0, tile.transform.position);
+        DOTween.To(() => 0, x => { }, 0, AnimTime).OnComplete(() =>
         {
-            if (Player.AimJudge(indi))
+            foreach (var indi in tile.Individuals_)
             {
-                Player.Attack(indi, Player.Strength * AttackRate);
+                if (Player.AimJudge(indi))
+                {
+                    Player.Attack(indi, Player.Strength * AttackRate);
+                }
             }
-        }
+        });
     }
 }

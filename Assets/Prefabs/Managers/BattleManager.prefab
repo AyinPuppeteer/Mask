@@ -48,8 +48,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PanelTimer: {fileID: 0}
   PhaseIcon: {fileID: 0}
-  PhaseIcons: []
+  PhaseIcons:
+  - {fileID: 21300000, guid: a203c4bae2488e14cb152a0e911e00ac, type: 3}
+  - {fileID: 21300000, guid: c5964eb3a8b52db4792b2b0afd76306c, type: 3}
   JumpTextOb: {fileID: 4457622411012738658, guid: 9d60aaefe514620468cfda10e1d82ec8, type: 3}
+  EffectOb:
+  - {fileID: 3057377121681540436, guid: ed5b6205898585c4cacce817d071620d, type: 3}
+  - {fileID: 2981341037280144099, guid: 2af6fb6ff5ab7a3499617dbab5920058, type: 3}
+  - {fileID: 954129473592643607, guid: 1f16d68a663fdf64eb85cfc8b9314628, type: 3}
+  - {fileID: 2330817522336577730, guid: d0eac2ad89c93a5448a73f7f8fbfe37a, type: 3}
+  - {fileID: 4108853820377883532, guid: 51b416c4d65ca1c4fb3042b02174e153, type: 3}
 --- !u!114 &7304609490655038807
 MonoBehaviour:
   m_ObjectHideFlags: 0

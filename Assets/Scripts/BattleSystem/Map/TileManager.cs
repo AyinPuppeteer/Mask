@@ -83,6 +83,7 @@ public class TileManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
+            if (Input.mousePosition.x < 380 || Input.mousePosition.x > 1220) return;
             Vector3 mouseWorldPos = main2DCamera.ScreenToWorldPoint(Input.mousePosition);
 
             Tile tile = GetTile(mouseWorldPos);
