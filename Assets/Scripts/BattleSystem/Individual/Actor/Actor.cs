@@ -7,8 +7,6 @@ using UnityEngine;
 //所有角色的父类
 public class Actor : Individual
 {
-    [SerializeField]
-    private SpriteRenderer spriteRenderer;
     private bool Acting;//是否处于行动状态
     public bool Acting_ { get => Acting; set => Acting = value; }
     public bool Controlable => !Acting && !IsFrozen;

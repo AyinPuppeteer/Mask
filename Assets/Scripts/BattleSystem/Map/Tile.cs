@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,6 +33,12 @@ public class Tile : MonoBehaviour
     public float Distance(Individual indi)
     {
         return Vector2.Distance(transform.position, indi.transform.position);
+    }
+
+    //获取与另一个图块的曼哈顿距离
+    public int ManDis(Tile another)
+    {
+        return Math.Abs(Row - another.Row) + Math.Abs(Column - another.Column);
     }
 
     public void whenChosen(bool isChosen)

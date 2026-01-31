@@ -61,6 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IndividualObs:
   - {fileID: 5797666855175130918, guid: 46bb20ee55d54d946aad9a56382e6e58, type: 3}
+  NormalMat: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  HighLightMat: {fileID: 2100000, guid: 8df9023c87bf7a84f8918aef1aa0177c, type: 2}
 --- !u!1001 &7579193953524376810
 PrefabInstance:
   m_ObjectHideFlags: 0

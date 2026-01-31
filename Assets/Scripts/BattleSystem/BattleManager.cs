@@ -110,12 +110,12 @@ public class BattleManager : MonoBehaviour
     public void ChooseActor(Actor actor)
     {
         ChoosingActor = actor;
-        //选中高亮
+        actor.SetMat(IndividualManager.Instance.HighLightMat_);
     }
     public void CancelChooseActor()
     {
+        ChoosingActor.SetMat(IndividualManager.Instance.NormalMat_);
         ChoosingActor = null;
-        //取消高亮
     }
 
     public void ChooseSkill(Skill skill)
