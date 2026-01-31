@@ -73,7 +73,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (ChoosingSkill.JudgeTile(tile))
                 {
-                    ChoosingSkill.WhenUse();
+                    ChoosingSkill.Use();
                     CancelChooseSkill();
                 }
             }

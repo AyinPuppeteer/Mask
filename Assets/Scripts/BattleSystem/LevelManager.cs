@@ -11,6 +11,31 @@ public class LevelManager : MonoBehaviour
         Instance = this;
     }
 
+    //显示和隐藏
+    public void Show(bool b)
+    {
+        if (b)
+        {
+
+        }
+        else
+        {
+
+        }
+    }
+
+    //选定关卡
+    public void ChooseLevel()
+    {
+
+    }
+
+    //开始游戏
+    public void StartLevel()
+    {
+
+    }
+
     public static LevelPack ReturnPack()
     {
         LevelPack pack = new();
