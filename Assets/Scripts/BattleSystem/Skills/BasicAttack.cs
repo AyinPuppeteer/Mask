@@ -18,6 +18,7 @@ public class BasicAttack : Skill
     protected override void SkillInit()
     {
         Name = "»ù´¡¹¥»÷";
+        Description = "¹¥»÷·¶Î§ÄÚµÄ1ÃûµÐÈË¡£";
     }
 
     public override bool JudgeTile(Tile tile)

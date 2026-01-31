@@ -9,6 +9,7 @@ public class Ridicule : Skill
     protected override void SkillInit()
     {
         Name = "嘲讽";
+        Description = "嘲讽一定范围内的敌人，并增加护甲。";
         CoolTime = 12f;
     }
 
