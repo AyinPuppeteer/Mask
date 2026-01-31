@@ -8,5 +8,13 @@ public class TestActor : Actor
     {
         base.ActorInit();
         Name = "²âÊÔ½ÇÉ«";
+        MaxHealth = 100;
+    }
+
+    protected override void IndividualStart()
+    {
+        base.IndividualStart();
+        Buff buff = new Burn(this, 10, 5f);
+        AddBuff(buff);
     }
 }

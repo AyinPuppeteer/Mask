@@ -2,13 +2,16 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class BattleManager : MonoBehaviour
 {
     private LevelPack LevelNow;
 
     private int Turn;//当前回合数
-    private BattlePhase Phase = BattlePhase.执行;//当前状态
+    private BattlePhase Phase = BattlePhase.执行;//当前阶段
+    private float PhaseTimer;//当前阶段的剩余时间
+    private float PhaseTime = 10f;//一个阶段的时间
 
     private Actor ChoosingActor;//选中的角色
     public Actor ChoosingActor_ => ChoosingActor;
@@ -51,6 +54,13 @@ public class BattleManager : MonoBehaviour
 
     private void Update()
     {
+        if (Phase == BattlePhase.执行 || Phase == BattlePhase.敌人行动)
+        {
+            foreach(var indi in IndividualManager.ReturnAllIndividuals())
+            {
+                indi.TimeFresh(Time.deltaTime);
+            }
+        }
         if (Input.GetMouseButtonDown(1))
         {
             if(ChoosingSkill != null)
@@ -132,9 +142,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void TextJump(string text, Color color)
+    public void TextJump(Vector3 pos, string text, Color color)
     {
-        GameObject ob = Instantiate(JumpTextOb, transform.position, Quaternion.identity, transform);
+        GameObject ob = Instantiate(JumpTextOb, pos, Quaternion.identity, transform);
         JumpText jt = ob.GetComponent<JumpText>();
         jt.SetText(text, color);
     }

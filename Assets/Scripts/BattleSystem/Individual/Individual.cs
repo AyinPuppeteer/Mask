@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 //单位的共同父类
@@ -42,9 +43,27 @@ public class Individual : MonoBehaviour
     protected int MaxMana;//最大魔力值
     public int MaxMana_ => MaxMana;
 
+    protected float ManaRate = 0.5f;//魔力恢复速率
+    public float ManaTimer;//魔力回复计时器
+
     public void UseMana(int cost)
     {
         Mana -= cost;
+    }
+
+    public void GainMana(int mana)
+    {
+        Mana = Mathf.Min(Mana + mana, MaxMana);
+    }
+
+    public void NatrualMana(float time)
+    {
+        ManaTimer += time;
+        while(ManaTimer > ManaRate)
+        {
+            ManaTimer -= ManaRate;
+            GainMana(1);
+        }
     }
     #endregion
 
@@ -61,6 +80,59 @@ public class Individual : MonoBehaviour
     protected Tile InTile;//所处的格子
     public void SetTile(Tile tile) => InTile = tile;
 
+    #region 基本Buff
+    #region 冰冻
+    protected float FrozenTimer;//冰冻计时器
+    public bool IsFrozen => FrozenTimer > 0;
+    public void SetFrozen(float time)
+    {
+        FrozenTimer = Mathf.Max(FrozenTimer, time);
+    }
+    #endregion
+    #endregion
+    #region Buff管理
+    public List<Buff> BuffList = new();
+
+    public Buff FindBuff(string name)
+    {
+        foreach(var buff in BuffList)
+        {
+            if(buff.Name_ == name) return buff;
+        }
+        return null;
+    }
+
+    public void AddBuff(Buff buff)
+    {
+        Buff oldbuff = FindBuff(buff.Name_);
+        if (oldbuff == null)
+        {
+            buff.AttachTo(this);
+            BuffList.Add(buff);
+        }
+        else
+        {
+            oldbuff.Addition(buff);
+        }
+    }
+
+    public void RemoveBuff(Buff buff)
+    {
+        if (BuffList.Contains(buff)) BuffList.Remove(buff);
+        else Debug.LogError($"试图删除某个{buff.Name_}，但其不存在！");
+    }
+
+    protected void BuffUpdate(float time)
+    {
+        foreach(var buff in BuffList)
+        {
+            buff.UpdateByTime(time);
+        }
+        
+        BuffList = BuffList.Where(buff => !buff.DelTag_).ToList();
+    }
+    #endregion
+
     public Individual()
     {
         IndividualInit();
@@ -72,6 +144,8 @@ public class Individual : MonoBehaviour
 
     private void Start()
     {
+        Health = MaxHealth;
+        Mana = MaxMana;
         IndividualStart();
     }
     protected virtual void IndividualStart()
@@ -88,6 +162,14 @@ public class Individual : MonoBehaviour
         
     }
 
+    //根据传入的时间差更新
+    public void TimeFresh(float time)
+    {
+        FrozenTimer = Mathf.Max(FrozenTimer - time, 0);
+        BuffUpdate(time);
+        NatrualMana(time);
+    }
+
     #region 伤害相关
     /// <summary>
     /// 伤害实施（返回实际受伤量）
@@ -100,7 +182,7 @@ public class Individual : MonoBehaviour
             {
                 Shield -= damage;
                 damage = 0;
-                BattleManager.Instance.TextJump("完全防御", Color.blue);
+                BattleManager.Instance.TextJump(transform.position, "完全防御", Color.blue);
             }
             else
             {
@@ -113,7 +195,7 @@ public class Individual : MonoBehaviour
         {
             DeadSolve();
         }
-        BattleManager.Instance.TextJump(damage.ToString(), Color.red);
+        BattleManager.Instance.TextJump(transform.position, damage.ToString(), Color.red);
         return damage;
     }
 
@@ -134,7 +216,7 @@ public class Individual : MonoBehaviour
     {
         Health += heal;
         Health = Mathf.Min(Health, MaxHealth);
-        BattleManager.Instance.TextJump(heal.ToString(), Color.green);
+        BattleManager.Instance.TextJump(transform.position, heal.ToString(), Color.green);
     }
     #endregion
 
