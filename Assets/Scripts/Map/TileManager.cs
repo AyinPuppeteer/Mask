@@ -18,12 +18,19 @@ public class TileManager : MonoBehaviour
     {
         if(x > 0 && y > 0 && maxHeight >= x && maxWidth >= y)
         {
-            return tileList[x, y];
+            return tileList[x - 1, y - 1];
         }
         else
         {
             return null;
         }
+    }
+
+    public Tile GetTile(Vector2 pos)
+    {
+        int SelectIndexX = Mathf.FloorToInt(maxHeight / 2.0f - (pos.y - transform.position.y) / 0.16f);
+        int SelectIndexY = Mathf.FloorToInt((pos.x - transform.position.x) / 0.16f + maxWidth / 2.0f);
+        return GetTile(SelectIndexX + 1, SelectIndexY + 1);
     }
 
     private Camera main2DCamera;
@@ -53,16 +60,16 @@ public class TileManager : MonoBehaviour
         }
         else
         {
-            maxWidth = pack.Tiles.GetLength(1);
             maxHeight = pack.Tiles.GetLength(0);
+            maxWidth = pack.Tiles.GetLength(1);
 
-            tileList = new Tile[maxWidth, maxHeight];
+            tileList = new Tile[maxHeight, maxWidth];
 
             for (int i = 0; i < maxHeight; i++)
             {
                 for (int j = 0; j < maxWidth; j++)
                 {
-                    GameObject ob = Instantiate(tilePrefab, transform.position + new Vector3((i - maxHeight / 2.0f) * 0.16f, (j - maxWidth / 2.0f) * 0.16f, 0), Quaternion.identity, transform);
+                    GameObject ob = Instantiate(tilePrefab, transform.position + new Vector3((j - maxWidth / 2.0f) * 0.16f + 0.08f, (maxHeight / 2.0f - i) * 0.16f - 0.08f, 0), Quaternion.identity, transform);
                     Tile tile = ob.GetComponent<Tile>();
                     tile.Initialize((TileType)pack.Tiles[i, j], i, j, spriteList[0]);
                     tileList[i, j] = tile;
@@ -77,13 +84,8 @@ public class TileManager : MonoBehaviour
         {
             Vector3 mouseWorldPos = main2DCamera.ScreenToWorldPoint(Input.mousePosition);
 
-            int SelectIndexX = Mathf.FloorToInt((mouseWorldPos.x - transform.position.x) / 0.16f + maxHeight / 2.0f);
-            int SelectIndexY = Mathf.FloorToInt((mouseWorldPos.y - transform.position.y) / 0.16f + maxWidth / 2.0f);
-
-            if(SelectIndexX < maxHeight || SelectIndexY < maxWidth)
-            {
-                tileList[SelectIndexX, SelectIndexY].whenChosen(true);
-            }
+            Tile tile = GetTile(mouseWorldPos);
+            if (tile != null) tile.whenChosen(true);
         }
     }
 }

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,7 +32,7 @@ public class Individual : MonoBehaviour
     protected int MaxHealth;
     public int MaxHealth_ { get => MaxHealth; }
 
-    public int Shield;
+    protected int Shield;
     public int Shield_ { get => Shield; }
     #endregion
 
@@ -51,6 +52,9 @@ public class Individual : MonoBehaviour
 
     //技能列表
     protected List<Skill> SkillList = new();
+
+    protected Tile InTile;//所处的格子
+    public void SetTile(Tile tile) => InTile = tile;
 
     public Individual()
     {
@@ -76,7 +80,7 @@ public class Individual : MonoBehaviour
     }
     protected virtual void IndividualUpdate()
     {
-
+        
     }
 
     #region 伤害相关
@@ -131,6 +135,19 @@ public class Individual : MonoBehaviour
     private void DeadSolve()
     {
 
+    }
+    #endregion
+
+    #region 管理移动
+    public virtual void MoveTo(Tile tile, float time = 0.5f)
+    {
+        transform.DOMove(tile.transform.position, time).OnUpdate(() =>
+        {
+            InTile.Individuals_.Remove(this);
+            InTile = TileManager.Instance.GetTile(transform.position);
+            transform.parent = InTile.transform;
+            InTile.Individuals_.Add(this);
+        });
     }
     #endregion
 }

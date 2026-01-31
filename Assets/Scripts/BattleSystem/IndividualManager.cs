@@ -34,12 +34,12 @@ public class IndividualManager : MonoBehaviour
     }
 
     //创造单位
-    public void CreateIndividual(string name)
+    public void CreateIndividual(string name, Tile tile)
     {
         GameObject model = ReturnIndividual(name);
         if (model == null) return;
         //如果对应格子已有单位则驳回
-        GameObject ob = Instantiate(model);
+        GameObject ob = Instantiate(model, tile.transform.position, Quaternion.identity, tile.transform);
         Individual indi = ob.GetComponent<Individual>();
         Individuals.Add(indi);
         if(indi is Actor actor)
@@ -50,6 +50,8 @@ public class IndividualManager : MonoBehaviour
         {
             Enemies.Add(enemy);
         }
+        tile.Individuals_.Add(indi);
+        indi.SetTile(tile);
     }
 
     #region 获取单位

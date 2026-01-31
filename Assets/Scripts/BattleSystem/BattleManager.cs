@@ -8,7 +8,7 @@ public class BattleManager : MonoBehaviour
     private LevelPack LevelNow;
 
     private int Turn;//当前回合数
-    private BattlePhase Phase = BattlePhase.分析;//当前状态
+    private BattlePhase Phase = BattlePhase.执行;//当前状态
 
     private Actor ChoosingActor;//选中的角色
     public Actor ChoosingActor_ => ChoosingActor;
@@ -37,17 +37,41 @@ public class BattleManager : MonoBehaviour
     {
         foreach(var pair in LevelNow.IndividualNames_)
         {
-            //获取格子
+            Tile tile = TileManager.Instance.GetTile(pair.Key.Item1, pair.Key.Item2);
             string name = pair.Value;
-            IndividualManager.Instance.CreateIndividual(name);//生成单位
+            IndividualManager.Instance.CreateIndividual(name, tile);//生成单位
         }
     }
 
+    #region 有关选择与交互的脚本
+    public void ChooseTile(Tile tile)
+    {
+        if(Phase == BattlePhase.执行)
+        {
+            if(ChoosingActor != null)
+            {
+                //移动
+                ChoosingActor.MoveTo(tile);
+                ChoosingActor = null;
+            }
+            else
+            {
+                foreach (var indi in tile.Individuals_)
+                {
+                    if (indi != null && indi is Actor actor && !actor.Acting_)
+                    {
+                        ChooseActor(actor);//更新战斗管理器中的选中角色
+                    }
+                }
+            }
+        }
+    }
     public void ChooseActor(Actor actor)
     {
         ChoosingActor = actor;
         //选中高亮
     }
+    #endregion
 
     //判断胜利失败条件
     private void CheckGoal()

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -31,16 +32,13 @@ public class Actor : Individual
     {
 
     }
-    public void Highlight(bool isChoose)
+
+    #region ¹ÜÀíÒÆ¶¯
+    public override void MoveTo(Tile tile, float time = 0.5f)
     {
-        if (!isChoose)
-        {
-            spriteRenderer.color = new Color(0, 0, 0, 0);
-           
-        }
-        else
-        {
-            spriteRenderer.color = new Color(1f, 0.2f, 0.2f, 0.7f);
-        }
+        Acting = true;
+        DOTween.To(() => 0, x => { }, 0, time).OnComplete(() => Acting = false);
+        base.MoveTo(tile, time);
     }
+    #endregion
 }
