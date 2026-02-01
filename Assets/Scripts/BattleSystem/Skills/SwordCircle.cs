@@ -5,23 +5,16 @@ using UnityEngine;
 using UnityEngine.UIElements;
 
 //»ù´¡¹¥»÷
-public class BasicAttack : Skill
+public class SwordCircle : Skill
 {
-    private float AttackRate;//¹¥»÷±ÈÂÊ
-    private int Distance;//¹¥»÷·¶Î§
-    private float AnimTime;//¶¯»­Ê±¼ä
-
-    public BasicAttack(float rate, int distance, float animtime) : base()
-    {
-        AttackRate = rate;
-        Distance = distance;
-        AnimTime = animtime;
-    }
+    private float AttackRate = 1.5f;//¹¥»÷±ÈÂÊ
+    private int Distance = 1;//¹¥»÷·¶Î§
+    private float AnimTime = 0.5f;//¶¯»­Ê±³¤
 
     protected override void SkillInit()
     {
-        Name = "»ù´¡¹¥»÷";
-        Description = "¹¥»÷·¶Î§ÄÚµÄ1ÃûµÐÈË¡£";
+        Name = "ÈÐ»·";
+        Description = "Ðý·çÕ¶£¡";
     }
 
     public override bool JudgeTile(Tile tile)
@@ -45,14 +38,17 @@ public class BasicAttack : Skill
         BattleManager.Instance.CreateEffect(0, tile.transform.position).PlayAnim("AxeAttack");
         DOTween.To(() => 0, x => { }, 0, AnimTime).OnComplete(() =>
         {
-            foreach (var indi in tile.Individuals_)
+            foreach (var t in TileManager.Instance.ReturnTiles(Player.Row - 1, Player.Column - 1, 3, 3))
             {
-                if (Player.AimJudge(indi))
+                foreach (var indi in tile.Individuals_)
                 {
-                    Player.Attack(indi, Player.Strength * AttackRate);
+                    if (Player.AimJudge(indi))
+                    {
+                        Player.Attack(indi, Player.Strength * AttackRate);
+                    }
                 }
+                Player.Acting_ = false;
             }
-            Player.Acting_ = false;
         });
     }
 }
