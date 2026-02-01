@@ -156,7 +156,7 @@ public class Individual : MonoBehaviour
     }
     #endregion
 
-    private bool Acting;//是否处于行动状态
+    protected bool Acting;//是否处于行动状态
     public bool Acting_ { get => Acting; set => Acting = value; }
     public bool Controlable => !Acting && !IsFrozen;
 
