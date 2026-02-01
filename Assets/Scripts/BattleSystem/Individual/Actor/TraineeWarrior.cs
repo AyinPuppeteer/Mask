@@ -18,5 +18,6 @@ public class TraineeWarrior : Actor
 
         SkillList.Add(new BasicAttack(0.25f, 1, 1f));
         SkillList.Add(new Ridicule());
+        SkillList.Add(new SwordCircle());
     }
 }
